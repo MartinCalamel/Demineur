@@ -6,12 +6,8 @@ def reveal(i,j):
     plateau.tableau[i][j].hidden = False
     for x in range(i-1,i+2):
         for y in range(j-1,j+2):
-            if not x == -1 and not y == -1 and not x >= len(plateau.tableau) and not y >= len(plateau.tableau):
-                a = plateau.tableau[x][y]
-                b = plateau.tableau[i][j]
-                if plateau.tableau[x][y].hidden:
-                    if plateau.tableau[i][j].value == 0 or plateau.tableau[x][y].value==0:
-                        reveal(x,y)
+            if not x == -1 and not y == -1 and not x >= len(plateau.tableau) and not y >= len(plateau.tableau) and plateau.tableau[x][y].hidden and (plateau.tableau[i][j].value == 0 or plateau.tableau[x][y].value==0):
+                reveal(x,y)
 def perdu():
     draw_plateau(None)
     for i in plateau.tableau:
@@ -48,7 +44,7 @@ def draw_plateau(event):
             elif j.marked:
                 canvas.create_oval(j.coord[0]*case_size,j.coord[1]*case_size,j.coord[0]*case_size+case_size,j.coord[1]*case_size+case_size,fill='red')
             else:
-                canvas.create_text(j.coord[0]*case_size,j.coord[1]*case_size,anchor="nw", text=j.value,font=(f'Helvetica {int(case_size*0.7)} bold'))
+                canvas.create_text(j.coord[0]*case_size+4,j.coord[1]*case_size,anchor="nw", text=j.value,font=(f'Helvetica {int(case_size*0.7)} bold'))
 
 def drapeau(event):
     x = int(event.x//case_size)
