@@ -33,24 +33,32 @@ def reveal_case(event):
     if plateau.tableau[x][y].value == 9:
         perdu()
     else:
-        reveal(x,y)
-        plateau.get_affichage()
-        draw_plateau(None)
+        if not plateau.tableau[x][y].marked:
+            reveal(x,y)
+            plateau.get_affichage()
+            draw_plateau(None)
 
 
 def draw_plateau(event):
     canvas.delete('all')
     for i in plateau.tableau:
         for j in i:
-            if j.hidden:
+            if j.hidden and not j.marked:
                 canvas.create_rectangle(j.coord[0]*case_size,j.coord[1]*case_size,j.coord[0]*case_size+case_size,j.coord[1]*case_size+case_size,fill='green')
+            elif j.marked:
+                canvas.create_oval(j.coord[0]*case_size,j.coord[1]*case_size,j.coord[0]*case_size+case_size,j.coord[1]*case_size+case_size,fill='red')
             else:
                 canvas.create_text(j.coord[0]*case_size,j.coord[1]*case_size,anchor="nw", text=j.value,font=(f'Helvetica {int(case_size*0.7)} bold'))
 
-def drapeau():
-    pass
+def drapeau(event):
+    x = int(event.x//case_size)
+    y = int(event.y//case_size)
+    case = plateau.tableau[x][y]
+    if case.hidden:
+        case.marked = not case.marked
+    draw_plateau(None)
 
-plateau = P(2)
+plateau = P(0)
 case_size = 20
 fen = tk.Tk()
 fen.geometry(f"{len(plateau.tableau)*20}x{len(plateau.tableau)*20+100}")
@@ -58,6 +66,6 @@ fen.title('Demineur')
 canvas = tk.Canvas(width=len(plateau.tableau)*20, height=len(plateau.tableau)*20)
 canvas.pack(side=tk.BOTTOM)
 canvas.bind('<Button-1>', reveal_case)
-canvas.bind('<Button-2>',drapeau)
+canvas.bind('<Button-3>',drapeau)
 draw_plateau(None)
 fen.mainloop()

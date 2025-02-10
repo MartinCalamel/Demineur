@@ -16,7 +16,7 @@ class Plateau:
     
     def place_bombe(self,coord):
         nb_case = self.level_config[self.level]
-        for i in range(int((nb_case**2)*0.1)):
+        for i in range(int((nb_case**2)*0.2)):
             x,y = randint(0,nb_case-1),randint(0,nb_case-1)
             while self.tableau[x][y].bombe or coord==(x,y):
                 x,y = randint(0,nb_case-1),randint(0,nb_case-1)

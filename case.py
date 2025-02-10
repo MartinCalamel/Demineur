@@ -4,6 +4,7 @@ class Case:
         self.bombe : bool = False
         self.value : int = 0
         self.hidden : bool = True
+        self.marked : bool = False
     def set_bombe(self):
         self.bombe = True
         self.value = 9
