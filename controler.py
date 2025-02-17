@@ -54,7 +54,7 @@ def drapeau(event):
         case.marked = not case.marked
     draw_plateau(None)
 
-plateau = P(0)
+plateau = P(2)
 case_size = 20
 fen = tk.Tk()
 fen.geometry(f"{len(plateau.tableau)*20}x{len(plateau.tableau)*20+100}")
