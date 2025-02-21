@@ -12,8 +12,14 @@ def perdu():
     draw_plateau(None)
     for i in plateau.tableau:
         for j in i:
-            if j.value == 9:
+            if j.value == 9 and not j.marked:
                 canvas.create_rectangle(j.coord[0]*case_size,j.coord[1]*case_size,j.coord[0]*case_size+case_size,j.coord[1]*case_size+case_size,fill='red')
+            elif j.marked and j.hidden:
+                canvas.create_rectangle(j.coord[0]*case_size,j.coord[1]*case_size,j.coord[0]*case_size+case_size,j.coord[1]*case_size+case_size,fill='green')
+            elif not j.hidden:
+                canvas.create_text(j.coord[0]*case_size+4,j.coord[1]*case_size,anchor="nw", text=j.value,font=(f'Helvetica {int(case_size*0.7)} bold'))
+
+                
     messagebox.showerror(message="vous avez perdu !")
     fen.destroy()
 
@@ -26,10 +32,10 @@ def reveal_case(event):
         plateau.fist_click = True
     x = int(event.x//case_size)
     y = int(event.y//case_size)
-    if plateau.tableau[x][y].value == 9:
-        perdu()
-    else:
-        if not plateau.tableau[x][y].marked:
+    if not plateau.tableau[x][y].marked:
+        if plateau.tableau[x][y].value == 9:
+            perdu()
+        else:
             reveal(x,y)
             plateau.get_affichage()
             draw_plateau(None)
@@ -54,7 +60,7 @@ def drapeau(event):
         case.marked = not case.marked
     draw_plateau(None)
 
-plateau = P(2)
+plateau = P(0)
 case_size = 20
 fen = tk.Tk()
 fen.geometry(f"{len(plateau.tableau)*20}x{len(plateau.tableau)*20+100}")
